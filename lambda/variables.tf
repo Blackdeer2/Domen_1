@@ -5,3 +5,11 @@ variable "get_all_courses_arn" {
 variable "get_course_arn" {
   type = string
 }
+
+variable "save_course_arn" {
+  type = string
+}
+
+variable "update_course_arn" {
+  type = string
+}

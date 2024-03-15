@@ -1,3 +1,5 @@
+# start get-all-courses
+
 resource "aws_iam_role" "get_all_courses_role" {
  name = "get-all-courses-role"
 
@@ -42,6 +44,8 @@ resource "aws_iam_role_policy_attachment" "get_all_courses_policy_attachment" {
   role        = aws_iam_role.get_all_courses_role.name
   policy_arn  = aws_iam_policy.get_all_courses_police.arn
 }
+
+# end get-all-courses
 
 # start get-course
 
@@ -91,3 +95,101 @@ resource "aws_iam_role_policy_attachment" "get_course_policy_attachment" {
 }
 
 # end get-course
+
+# start save-course
+
+resource "aws_iam_role" "save_course_role" {
+ name = "save-course-role"
+
+assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = "sts:AssumeRole",
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      },
+      Effect = "Allow"
+    }]
+  })
+}
+
+resource "aws_iam_policy" "save_course_police" {
+
+  policy      = jsonencode({
+        Version = "2012-10-17",
+        Statement = [
+        {
+            Action = [
+            "dynamodb:PutItem",
+            ],
+            Effect   = "Allow",
+            Resource = var.dynamodb_courses_arn
+        },
+        {
+            Effect = "Allow",
+            Action = [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+            ],
+            Resource = "*"
+        }
+        ]
+    }) 
+}
+
+resource "aws_iam_role_policy_attachment" "save_course_policy_attachment" {
+  role        = aws_iam_role.save_course_role.name
+  policy_arn  = aws_iam_policy.save_course_police.arn
+}
+
+# end save-course
+
+# start update-course
+
+resource "aws_iam_role" "update_course_role" {
+ name = "update-course-role"
+
+assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = "sts:AssumeRole",
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      },
+      Effect = "Allow"
+    }]
+  })
+}
+
+resource "aws_iam_policy" "update_course_police" {
+
+  policy      = jsonencode({
+        Version = "2012-10-17",
+        Statement = [
+        {
+            Action = [
+            "dynamodb:PutItem",
+            ],
+            Effect   = "Allow",
+            Resource = var.dynamodb_courses_arn
+        },
+        {
+            Effect = "Allow",
+            Action = [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+            ],
+            Resource = "*"
+        }
+        ]
+    }) 
+}
+
+resource "aws_iam_role_policy_attachment" "update_course_policy_attachment" {
+  role        = aws_iam_role.update_course_role.name
+  policy_arn  = aws_iam_policy.update_course_police.arn
+}
+
+# end save-course
