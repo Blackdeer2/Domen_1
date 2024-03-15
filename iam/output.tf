@@ -17,3 +17,7 @@ output "update_course_role_arn" {
 output "delete_course_role_arn" {
   value = aws_iam_role.save_course_role.arn
 }
+
+output "get_all_authors_role_arn" {
+  value = aws_iam_role.get_all_authors_role.arn
+}

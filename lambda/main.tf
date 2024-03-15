@@ -92,3 +92,22 @@ resource "aws_lambda_function" "delete_course" {
 }
 
 # end delete-course
+
+# start get-all-authors
+
+data "archive_file" "zip_get_all_authors" {
+ type        = "zip"
+ source_file  = "lambda/get-all-authors/get-all-authors.js"
+ output_path = "lambda/get-all-authors/get-all-authors.zip"
+}
+
+resource "aws_lambda_function" "get_all_authors" {
+ filename                       = data.archive_file.zip_get_all_authors.output_path
+ function_name                  = "get-all-authors"
+ role                           = var.get_all_authors_arn
+ handler                        = "get-all-authors.handler"
+ runtime                        = "nodejs16.x"
+
+}
+
+# end get-all-authors

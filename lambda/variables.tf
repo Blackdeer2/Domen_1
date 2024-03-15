@@ -17,3 +17,7 @@ variable "update_course_arn" {
 variable "delete_course_arn" {
   type = string
 }
+
+variable "get_all_authors_arn" {
+  type = string
+}

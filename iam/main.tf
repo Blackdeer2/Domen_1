@@ -242,3 +242,52 @@ resource "aws_iam_role_policy_attachment" "delete_course_policy_attachment" {
 }
 
 # end delete-course
+
+# start get-all-authors
+
+resource "aws_iam_role" "get_all_authors_role" {
+ name = "get-all-authors-role"
+
+assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = "sts:AssumeRole",
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      },
+      Effect = "Allow"
+    }]
+  })
+}
+
+resource "aws_iam_policy" "get_all_authors_police" {
+
+  policy      = jsonencode({
+        Version = "2012-10-17",
+        Statement = [
+        {
+            Action = [
+            "dynamodb:Scan",
+            ],
+            Effect   = "Allow",
+            Resource = var.dynamodb_authors_arn
+        },
+        {
+            Effect = "Allow",
+            Action = [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+            ],
+            Resource = "*"
+        }
+        ]
+    }) 
+}
+
+resource "aws_iam_role_policy_attachment" "get_all_authors_policy_attachment" {
+  role        = aws_iam_role.get_all_authors_role.name
+  policy_arn  = aws_iam_policy.get_all_authors_police.arn
+}
+
+# end get-all-courseauthorss
