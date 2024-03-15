@@ -73,3 +73,22 @@ resource "aws_lambda_function" "update_course" {
 }
 
 # end update-course
+
+# start delete-course
+
+data "archive_file" "zip_delete_course" {
+ type        = "zip"
+ source_file  = "lambda/delete-course/delete-course.js"
+ output_path = "lambda/delete-course/delete-course.zip"
+}
+
+resource "aws_lambda_function" "delete_course" {
+ filename                       = data.archive_file.zip_delete_course.output_path
+ function_name                  = "delete-course"
+ role                           = var.delete_course_arn
+ handler                        = "delete-course.handler"
+ runtime                        = "nodejs16.x"
+
+}
+
+# end delete-course

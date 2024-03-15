@@ -13,3 +13,7 @@ variable "save_course_arn" {
 variable "update_course_arn" {
   type = string
 }
+
+variable "delete_course_arn" {
+  type = string
+}
